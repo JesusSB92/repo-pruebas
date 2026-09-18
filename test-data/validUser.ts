@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
 export const validUser = {
-  user_email: process.env.USER_EMAIL ?? '',
+  email: process.env.EMAIL ?? '',
   password: process.env.PASSWORD ?? '',
 };

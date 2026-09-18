@@ -4,7 +4,7 @@ import { validUser } from '../test-data/validUser.ts';
 
 type MyFixtures = {
   pm: PomManager;                       
-  validUser: { user_email: string; password: string };
+  validUser: { email: string; password: string };
 };
 
 export const test = base.extend<MyFixtures>({
