@@ -7,15 +7,15 @@ export abstract class BasePage {
     await this.page.goto(path);
   }
 
-  protected async basePageClick(selector: string | Locator) {
+  protected async clickElement(selector: string | Locator) {
     await this.toLocator(selector).click();
   }
 
-  protected async basePageFill(selector: string | Locator, value: string) {
+  protected async fillElement(selector: string | Locator, value: string) {
     await this.toLocator(selector).fill(value);
   }
 
-  protected async basePageExpectVisible(selector: string | Locator) {
+  protected async expectVisible(selector: string | Locator) {
     await expect(this.toLocator(selector)).toBeVisible();
   }
 

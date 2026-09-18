@@ -8,16 +8,16 @@ export class LoginPage extends BasePage {
     }
 
     async login(email: string, password: string) {
-        await this.basePageFill(this.page.getByRole('textbox', { name: 'Email' }), email);
-        await this.basePageFill(this.page.getByRole('textbox', { name: 'Password' }),  password);
-        await this.basePageClick(this.page.getByRole('button', { name: 'Sign in' }));
-        await this.basePageExpectVisible(this.page.getByRole('link', { name: 'Profile' }));
+        await this.fillElement(this.page.getByRole('textbox', { name: 'Email' }), email);
+        await this.fillElement(this.page.getByRole('textbox', { name: 'Password' }),  password);
+        await this.clickElement(this.page.getByRole('button', { name: 'Sign in' }));
+        await this.expectVisible(this.page.getByRole('link', { name: 'Profile' }));
     }
 
     async login_fail(email: string, password: string) {
-        await this.basePageFill(this.page.getByRole('textbox', { name: 'Email' }), email);
-        await this.basePageFill(this.page.getByRole('textbox', { name: 'Password' }),  password);
-        await this.basePageClick(this.page.getByRole('button', { name: 'Sign in' }));
-        await this.basePageExpectVisible(this.page.getByTestId('login-error'));
+        await this.fillElement(this.page.getByRole('textbox', { name: 'Email' }), email);
+        await this.fillElement(this.page.getByRole('textbox', { name: 'Password' }),  password);
+        await this.clickElement(this.page.getByRole('button', { name: 'Sign in' }));
+        await this.expectVisible(this.page.getByTestId('login-error'));
     }
 }
