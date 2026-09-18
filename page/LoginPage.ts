@@ -12,7 +12,6 @@ export class LoginPage extends BasePage {
         await this.basePageFill(this.page.getByRole('textbox', { name: 'Password' }),  password);
         await this.basePageClick(this.page.getByRole('button', { name: 'Sign in' }));
         await this.basePageExpectVisible(this.page.getByRole('link', { name: 'Profile' }));
-        await this.page.pause();
     }
 
     async login_fail(email: string, password: string) {
@@ -20,6 +19,5 @@ export class LoginPage extends BasePage {
         await this.basePageFill(this.page.getByRole('textbox', { name: 'Password' }),  password);
         await this.basePageClick(this.page.getByRole('button', { name: 'Sign in' }));
         await this.basePageExpectVisible(this.page.getByTestId('login-error'));
-        await this.page.pause();
     }
 }
