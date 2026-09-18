@@ -1,10 +1,11 @@
 import { test as base } from '@playwright/test';
 import PomManager from '../page/ManagePage';
-import { validUser } from '../test-data/validUser.ts';
+import { invalidUser, validUser } from '../test-data/validUser.ts';
 
 type MyFixtures = {
   pm: PomManager;                       
   validUser: { email: string; password: string };
+  invalidUser: { email: string; password: string };
 };
 
 export const test = base.extend<MyFixtures>({
@@ -13,6 +14,8 @@ export const test = base.extend<MyFixtures>({
   },
 
    validUser,
+   invalidUser
+   
 });
 
 export { expect } from '@playwright/test';
