@@ -19,7 +19,6 @@ export class TaskPage extends BasePage {
         await this.expectVisible(taskCard);
     }
     
-
     async updateTask(title: string, newTitle: string, newDescription: string) {
         const taskCard = await this.getTaskCardByTitle(title);
         expect(taskCard).not.toBeNull();
@@ -40,17 +39,13 @@ export class TaskPage extends BasePage {
         expect(taskCard).not.toBeNull();
         await this.expectVisible(taskCard);
         await this.clickElement(taskCard.locator('[data-testid^="task-menu-"]'));
-        await this.clickElement(this.page.locator('[data-testid^="task-delete-"]'));
-        this.page.once('dialog', async dialog => {
-
-            expect(dialog.type()).toBe('confirm');
-
-            expect(dialog.message()).toBe(
-            'Are you sure you want to delete this task?'
-            );
-
+        this.page.once('dialog', async (dialog) => {
+         expect(dialog.type()).toBe('confirm');
+         expect(dialog.message()).toBe('Are you sure you want to delete this task?');
             await dialog.accept();
         });
+        await this.clickElement(this.page.locator('[data-testid^="task-delete-"]'));
+        await expect(taskCard).toHaveCount(0);
     }
 
     async getTaskCardByTitle(title: string){
