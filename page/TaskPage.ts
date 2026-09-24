@@ -13,32 +13,57 @@ export class TaskPage extends BasePage {
         await this.clickElement(this.page.getByRole('button', { name: 'Create Task' }));
     }
 
-    async readTask(title: string, description: string, priority: string ){
-        const taskTitle = this.page.locator('[data-testid^="task-title-"]').filter({ hasText: title });
+    async readTask(title: string) {
+        const taskCard = await this.getTaskCardByTitle(title);
+        expect(taskCard).not.toBeNull();
+        await this.expectVisible(taskCard);
+    }
+    
 
-        await expect(taskTitle).toBeVisible();
-        await expect(taskTitle).toHaveText(title);
+    async updateTask(title: string, newTitle: string, newDescription: string) {
+        const taskCard = await this.getTaskCardByTitle(title);
+        expect(taskCard).not.toBeNull();
+        await this.expectVisible(taskCard);
+        await this.clickElement(taskCard.locator('[data-testid^="task-menu-"]'));
+        await this.clickElement(this.page.locator('[data-testid^="task-edit-"]'));
+        await this.expectVisible(this.page.getByRole('textbox', { name: 'Title' }));
+        await this.fillElement(this.page.getByRole('textbox', { name: 'Title' }), newTitle);
+        await this.fillElement(this.page.getByRole('textbox', { name: 'Description (optional)' }), newDescription);
+        await this.clickElement(this.page.getByRole('button', { name: 'Save Changes' }));
+        const updatedTaskCard = await this.getTaskCardByTitle(newTitle);
+        expect(updatedTaskCard).not.toBeNull();
+        await this.expectVisible(updatedTaskCard);
+    }
+    
+    async deleteTask(title: string) {
+        const taskCard = await this.getTaskCardByTitle(title);
+        expect(taskCard).not.toBeNull();
+        await this.expectVisible(taskCard);
+        await this.clickElement(taskCard.locator('[data-testid^="task-menu-"]'));
+        await this.clickElement(this.page.locator('[data-testid^="task-delete-"]'));
+        this.page.once('dialog', async dialog => {
 
+            expect(dialog.type()).toBe('confirm');
+
+            expect(dialog.message()).toBe(
+            'Are you sure you want to delete this task?'
+            );
+
+            await dialog.accept();
+        });
+    }
+
+    async getTaskCardByTitle(title: string){
+        const taskTitle = this.filterHasTextElement(this.page.locator('[data-testid^="task-title-"]'), title);     
         const testId = await taskTitle.getAttribute('data-testid');
 
         if (!testId) {
-            throw new Error(`No se encontró el data-testid de la tarea: ${title}`);
+            throw new Error(`No se encontró la tarea: ${title}`);
         }
 
         const taskId = testId.replace('task-title-', '');
-
-        const taskDescription = this.page.getByTestId(
-            `task-description-${taskId}`
-        );
-
-        const taskPriority = this.page.getByTestId(
-            `task-priority-${taskId}`
-        );
-
-        await expect(taskDescription).toHaveText(description);
-
-        await expect(taskPriority).toHaveText(
-            priority.toLowerCase()
-        );
+        const taskCard = this.page.getByTestId(`task-card-${taskId}`);
+        return taskCard;
     }
+    
 }

@@ -15,13 +15,17 @@ export abstract class BasePage {
     await this.toLocator(selector).fill(value);
   }
 
+  protected filterHasTextElement(selector: string | Locator, value: string) {
+    return this.toLocator(selector).filter({ hasText: value });
+  }
+
   protected async selectComboOption(combobox: Locator, optionName: string) {
     await combobox.click();
 
     await this.page
       .getByRole('option', { name: optionName })
       .click();
-}
+  }
 
   protected async expectVisible(selector: string | Locator) {
     await expect(this.toLocator(selector)).toBeVisible();

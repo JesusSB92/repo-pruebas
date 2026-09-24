@@ -9,7 +9,7 @@ type MyFixtures = {
   invalidUser: { email: string; password: string };
   task1: { title: string; description: string; priority: string };
   task2: { title: string; description: string; priority: string };
-  task3: { title: string; description: string; priority: string };
+  task3: { title: string; description: string };
 };
 
 export const test = base.extend<MyFixtures>({
